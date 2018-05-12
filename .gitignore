@@ -29,3 +29,5 @@ build/
 nbbuild/
 dist/
 nbdist/
+/Java II Final Project/nbproject/private/
+Java II Final Project/build.xml
