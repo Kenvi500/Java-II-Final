@@ -42,12 +42,12 @@ public class SortInfoHolder implements SearchSortInterface
     public String toString()
     {
         String out = "";
-        out += "Sort Name: " + getSortName() + "\n";
-        out += "Implementation: " + getImplementation() + "\n";
-        out += "Data Type of Structure: " + getDataType() + "\n";
-        out += "Number of Elements: " + NumberFormat.getNumberInstance(Locale.US).format(getNumberOfElements()) + "\n";
-        out += "Time Taken: " + NumberFormat.getNumberInstance(Locale.US).format(getTimeTaken()) + " " + getTimeMeasurement() + "\n";
-        out += "Comparisons Done: " + NumberFormat.getNumberInstance(Locale.US).format(getComparisons()) + "\n";
+        out += "Sort Name: " + getSortName() + System.getProperty("line.separator");
+        out += "Implementation: " + getImplementation() + System.getProperty("line.separator");
+        out += "Data Type of Structure: " + getDataType() + System.getProperty("line.separator");
+        out += "Number of Elements: " + NumberFormat.getNumberInstance(Locale.US).format(getNumberOfElements()) + System.getProperty("line.separator");
+        out += "Time Taken: " + NumberFormat.getNumberInstance(Locale.US).format(getTimeTaken()) + " " + getTimeMeasurement() + System.getProperty("line.separator");
+        out += "Comparisons Done: " + NumberFormat.getNumberInstance(Locale.US).format(getComparisons()) + System.getProperty("line.separator");
         return out;
     }
     

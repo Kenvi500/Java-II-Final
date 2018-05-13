@@ -151,9 +151,8 @@ public class TextFile<T extends Comparable<T>> implements TextFileInterface<T>
 
             PrintWriter out = new PrintWriter(
                     new BufferedWriter(
-                            new FileWriter(theFile)));
-
-            out.println(info);
+                            new FileWriter(theFile, true)));
+            out.println(info.toString());
             out.close();
         }
         catch(IOException ex)

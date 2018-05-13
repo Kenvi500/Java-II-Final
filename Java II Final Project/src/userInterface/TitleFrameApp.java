@@ -6,14 +6,14 @@ package userInterface;
  */
 public class TitleFrameApp extends javax.swing.JFrame {
 
-    private javax.swing.JFrame mainMenu;
+    private final javax.swing.JFrame mainMenu;
 
     /**
      * Creates new form titleFrameApp
      */
     public TitleFrameApp(){
         initComponents();
-        this.mainMenu = new MainMenuFrame();
+        this.mainMenu = new SearchingSortingQFrame(this);
     }
 
     /**

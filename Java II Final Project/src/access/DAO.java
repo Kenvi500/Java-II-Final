@@ -1,6 +1,7 @@
 package access;
 
 import data.ComparableArrayHolder;
+import data.SAHIPlus;
 import java.io.IOException;
 import searchSort.SearchInfoHolder;
 import searchSort.SearchSortInterface;
@@ -14,7 +15,7 @@ import text.TextFileInterface;
  * @author Kelvin Bonilla
  * @param <T> the data type that will be used by any functions that need it
  */
-public abstract class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInterface<T>, SearchSortInterface{
+public class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInterface<T>, SearchSortInterface{
     
     TextFile<T> theTxtFile;
     
@@ -38,6 +39,11 @@ public abstract class DAO<T extends Comparable<T>> implements SAHIAccess<T>, Tex
     // Precondition: size is a integer >1
     {
         return (SAHIAccess) new ComparableArrayHolder<>(size);
+    }
+    
+    public SAHIAccess<T> getComparableArrayHolder(T[] array)
+    {
+        return (SAHIAccess) new ComparableArrayHolder<>(array);
     }
     
     public SearchSortInterface getSearchInfoHolder(SearchType searchName, String valueSearchedFor, String result, String implementation, String dataType, int numberOfElements, long timeTaken, String timeMeasurement, int comparisons)
@@ -64,6 +70,101 @@ public abstract class DAO<T extends Comparable<T>> implements SAHIAccess<T>, Tex
     public T[] getArrayFromFile()
     {
         return theTxtFile.getArray();
+    }
+    
+    public void writeToOutput(SearchSortInterface info)
+    {
+        theTxtFile.writeToOutput(info);
+    }
+    
+    @Override
+    public int indexOf(T element, SearchType searchType) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(int index, boolean shift) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getSortComparisons() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public SAHIPlus resetSortComparisons() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getSearchComparisons() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public SAHIPlus resetSearchComparisons() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int binarySearch(T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int linearSearch(T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void sort(SortType st) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public SortState getCurSortState() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public T get(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void add(T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void add(int index, T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int indexOf(T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public T[] getArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addVal(int index, T value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
