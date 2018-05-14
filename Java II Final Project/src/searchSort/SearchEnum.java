@@ -10,6 +10,6 @@ public interface SearchEnum
     * Enumeration for the type of searches available.
     */
     public enum SearchType{
-        LINEAR,BINARY
+        LINEAR,BINARY,HASHING
     }
 }

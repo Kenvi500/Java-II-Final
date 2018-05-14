@@ -1,5 +1,6 @@
-package userInterface;
+package sortingUI;
 
+import titlesUI.TitleFrameApp;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
@@ -347,7 +348,7 @@ public class SortingSituationsFrame extends javax.swing.JFrame
                 return;
             }
         }
-        TitleFrameApp.displayFrame(new OutputResultsFrame(this, sortChoices, indicesChosen), this);
+        TitleFrameApp.displayFrame(new OutputSortResultsFrame(this, sortChoices, indicesChosen), this);
         
     }//GEN-LAST:event_nxtBtnActionPerformed
     

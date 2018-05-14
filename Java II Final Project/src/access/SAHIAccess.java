@@ -5,6 +5,6 @@ package access;
  * @author Kelvin Bonilla
  * @param <T> the data type of the ArrayHolder
  */
-public abstract interface SAHIAccess<T extends Comparable<T>> extends data.SAHIPlus<T> {
+public abstract interface SAHIAccess<T extends Comparable<T>> extends arrayHolders.SAHIPlus<T> {
     
 }

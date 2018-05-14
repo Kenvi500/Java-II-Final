@@ -1,5 +1,7 @@
-package userInterface;
+package titlesUI;
 
+import sortingUI.SortingAlgorithmsMenuFrame;
+import searchingUI.SearchingFrame;
 /**
  *
  * @author Kelvin Bonilla
@@ -98,7 +100,8 @@ public class SearchingSortingQFrame extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchingBtnActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, "Not implemented yet.", "Implementation error.", javax.swing.JOptionPane.ERROR_MESSAGE);
+        TitleFrameApp.displayFrame(new SearchingFrame(this), this);
+        dispose();
     }//GEN-LAST:event_searchingBtnActionPerformed
 
     private void sortingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortingBtnActionPerformed

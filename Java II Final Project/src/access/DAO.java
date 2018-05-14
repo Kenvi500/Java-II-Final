@@ -1,13 +1,15 @@
 package access;
 
-import data.ComparableArrayHolder;
-import data.SAHIPlus;
+import arrayHolders.ComparableArrayHolder;
+import arrayHolders.SAHIPlus;
 import java.io.IOException;
+import linked_list.SortableLinkedList;
 import searchSort.SearchInfoHolder;
 import searchSort.SearchSortInterface;
 import searchSort.SortInfoHolder;
 import text.TextFile;
 import text.TextFileInterface;
+import text.TextFileInterface.Order;
 
 /**
  * Used to indirectly instantiate a ComparableArrayHolder of type T, where T extends Comparable.
@@ -15,9 +17,9 @@ import text.TextFileInterface;
  * @author Kelvin Bonilla
  * @param <T> the data type that will be used by any functions that need it
  */
-public class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInterface<T>, SearchSortInterface{
+public class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInterface, SearchSortInterface{
     
-    TextFile<T> theTxtFile;
+    TextFile theTxtFile;
     
     public DAO(){}
 
@@ -51,31 +53,36 @@ public class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInte
         return (SearchSortInterface) new SearchInfoHolder(searchName.toString(), valueSearchedFor, result, implementation, dataType, numberOfElements, timeTaken, timeMeasurement, comparisons);
     }
     
-    public SearchSortInterface getSortInfoHolder(SortType sortName, String implementation, String dataType, int numberOfElements, long timeTaken, String timeMeasurement, int comparisons)
+    public SearchSortInterface getSortInfoHolder(SortType sortName, String implementation, String dataType, int numberOfElements, long timeTaken, String timeMeasurement, long comparisons)
     {
         return (SearchSortInterface) new SortInfoHolder(sortName.toString(), implementation, dataType, numberOfElements, timeTaken, timeMeasurement, comparisons);
     }
         
-    public void createTextFile(int numElements, boolean array, Order order)
+    public void createTextFile(int numElements, Order order)
     {
         try 
         {
-            theTxtFile = new TextFile<>(numElements, array, order);
+            theTxtFile = new TextFile(numElements, order);
         } 
         catch (IOException ex) {
             System.out.println(ex);
         }
     }
     
-    public T[] getArrayFromFile()
+    public Integer[] getArrayFromFile()
     {
         return theTxtFile.getArray();
+    }
+    
+    public SortableLinkedList<Integer> getLinkedListFromFile()
+    {
+        return theTxtFile.getLinkedList();
     }
     
     public void writeToOutput(SearchSortInterface info)
     {
         theTxtFile.writeToOutput(info);
-    }
+    }    
     
     @Override
     public int indexOf(T element, SearchType searchType) {
@@ -158,13 +165,24 @@ public class DAO<T extends Comparable<T>> implements SAHIAccess<T>, TextFileInte
     }
 
     @Override
-    public T[] getArray() {
+    public Integer[] getArray() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addVal(int index, T value) {
+    public void addVal(int index, Integer value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public int hashSearch(T element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public SortableLinkedList<Integer> getLinkedList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }

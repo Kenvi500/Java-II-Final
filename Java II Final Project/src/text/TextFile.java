@@ -3,11 +3,13 @@ package text;
 import java.io.*;
 import java.util.*;
 import java.nio.file.*;
+import linked_list.LLNode;
+import linked_list.SortableLinkedList;
 
-public class TextFile<T extends Comparable<T>> implements TextFileInterface<T>
+public class TextFile implements TextFileInterface
 {
 
-    private T[] values = null;
+    private Integer[] values = null;
     private boolean array; // if not array, it will default to linked-list
     private Path path = null;
     private File file = null;
@@ -17,16 +19,14 @@ public class TextFile<T extends Comparable<T>> implements TextFileInterface<T>
 
     /**
      * @param numElements
-     * @param array
      * @param order
      * @throws IOException 
      */
-    public TextFile(int numElements, boolean array, Order order) throws IOException
+    public TextFile(int numElements, Order order) throws IOException
     {
-        values = (T[]) new Comparable[numElements];
+        values = new Integer[numElements];
         for(int i = 0; i < values.length; i++)
             values[i] = null;
-        this.array = array;
         switch(order)
         {
             case RANDOM:
@@ -65,7 +65,7 @@ public class TextFile<T extends Comparable<T>> implements TextFileInterface<T>
                 String[] splitLine = line.split(FIELD_SEP);
                 for(int i = 0; i < splitLine.length; i++)
                 {
-                    values[++indexVal] = (T) splitLine[i];
+                    values[++indexVal] = Integer.parseInt(splitLine[i]);
                         
                 }                                
                 line = in.readLine();
@@ -106,15 +106,22 @@ public class TextFile<T extends Comparable<T>> implements TextFileInterface<T>
     }
 
     @Override
-    public T[] getArray()
+    public Integer[] getArray()
     {
         return values;
     }
 
-    // get linked-list, turns array into a linked-list of values
+    @Override
+    public SortableLinkedList<Integer> getLinkedList()
+    {
+        SortableLinkedList<Integer> list = new SortableLinkedList<>();
+        for(int i = 1; i < values.length; i++)
+            list.add(values[i]);
+        return list;        
+    }
     
     @Override
-    public void addVal(int index, T value)
+    public void addVal(int index, Integer value)
     {
         values[index] = value;
         saveVals();

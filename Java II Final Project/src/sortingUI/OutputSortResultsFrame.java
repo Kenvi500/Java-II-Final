@@ -1,22 +1,18 @@
-package userInterface;
+package sortingUI;
 
+import titlesUI.TitleFrameApp;
 import access.DAO;
 import access.SAHIAccess;
 import java.awt.event.ItemEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import linked_list.SortableLinkedList;
 import searchSort.SearchSortInterface;
-import searchSort.SortInfoHolder;
-import text.TextFileInterface;
 
 /**
  *
  * @author Kelvin Bonilla
  */
-public class OutputResultsFrame extends javax.swing.JFrame
+public class OutputSortResultsFrame extends javax.swing.JFrame
 {
     private javax.swing.JFrame previousWindow;
     private ArrayList<String> sortChoices;
@@ -27,6 +23,7 @@ public class OutputResultsFrame extends javax.swing.JFrame
     private ArrayList<DAO.Order> orders; // order chosen for each sort
     private ArrayList<DAO> dataAccess; // a bunch of DAO's for access to difference text files
     private ArrayList<Boolean> isArray; // whether the implementation of each sort is array-based or linked-list based
+    private ArrayList<SortableLinkedList> linkedLists;
     
     private final int HUNDRED = 0;
     private final int THOUSAND = 1;
@@ -40,7 +37,7 @@ public class OutputResultsFrame extends javax.swing.JFrame
     /**
      * Creates new form CheckDataFrame
      */
-    public OutputResultsFrame(javax.swing.JFrame previousWindow, ArrayList<String> sortChoicesList, ArrayList<int[]> indicesChosen) {
+    public OutputSortResultsFrame(javax.swing.JFrame previousWindow, ArrayList<String> sortChoicesList, ArrayList<int[]> indicesChosen) {
         this.previousWindow = previousWindow;
         this.sortChoices = sortChoicesList;
         this.indicesChosen = indicesChosen;
@@ -50,7 +47,20 @@ public class OutputResultsFrame extends javax.swing.JFrame
         this.orders = new ArrayList<>();
         this.dataAccess = new ArrayList<>();
         this.isArray = new ArrayList<>();
+        this.linkedLists = new ArrayList<>();
+        
+        for(int i = 0; i < sortChoicesList.size(); i++) // initialize arrayLists with null vals
+        {
+            sortOutputInfo.add(i, null);
+            arrayHolders.add(i, null);
+            numElements.add(i, null);
+            orders.add(i, null);
+            dataAccess.add(i, null);
+            linkedLists.add(i, null);
+        }
+        
         long duration;
+        
         for(int i = 0; i < sortChoices.size(); i++)
         {
             numElements.add(i, getNumElements(indicesChosen.get(i))); // get the number of elements the sort is going to use
@@ -58,12 +68,21 @@ public class OutputResultsFrame extends javax.swing.JFrame
             isArray.add(i, isArrayBased(sortChoices.get(i))); // add bool representing whether that sort is array or linked-list based
             dataAccess.add(i, new DAO()); // create new dao to store
             
-            dataAccess.get(i).createTextFile(numElements.get(i), isArray.get(i), orders.get(i)); // create txt file for that DAO
-            arrayHolders.add(i, dataAccess.get(i).getComparableArrayHolder(dataAccess.get(i).getArrayFromFile())); // create comparable array holder with data from text file
+            dataAccess.get(i).createTextFile(numElements.get(i), orders.get(i)); // create txt file for that DAO
+            if(isArray.get(i))
+                arrayHolders.add(i, dataAccess.get(i).getComparableArrayHolder(dataAccess.get(i).getArrayFromFile())); // create comparable array holder with data from text file
+            else
+                linkedLists.add(i, dataAccess.get(i).getLinkedListFromFile());
             
-            duration = sort(arrayHolders.get(i), getSortFromString(sortChoices.get(i))); // gets sort from sortChoices, passes that sort and the array holder to be sorted
+            if(isArray.get(i))
+                duration = sort(arrayHolders.get(i), getSortFromString(sortChoices.get(i))); // gets sort from sortChoices, passes that sort and the array holder to be sorted
+            else
+                duration = sort(linkedLists.get(i), getSortFromString(sortChoices.get(i)));
             
-            sortOutputInfo.add(i, dataAccess.get(i).getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", arrayHolders.get(i).getSortComparisons())); // create sort info holder and add it
+            if(isArray.get(i))
+                sortOutputInfo.add(i, dataAccess.get(i).getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", arrayHolders.get(i).getSortComparisons())); // create sort info holder and add it
+            else
+                sortOutputInfo.add(i, dataAccess.get(i).getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", linkedLists.get(i).getSortComparisons())); // create sort info holder and add it
             
             dataAccess.get(i).writeToOutput(sortOutputInfo.get(i)); // writing to output file
         }
@@ -78,7 +97,10 @@ public class OutputResultsFrame extends javax.swing.JFrame
         for(int i = 0; i < theSorts.size(); i++)
         {
             splitted = theSorts.get(i).split(" | ");
-            sortsComboBox.addItem(splitted[0]);
+            if(splitted[2].equalsIgnoreCase("linked-list"))
+                sortsComboBox.addItem(theSorts.get(i));
+            else
+                sortsComboBox.addItem(splitted[0]);
         }
     }
     
@@ -149,6 +171,15 @@ public class OutputResultsFrame extends javax.swing.JFrame
     }
     
     private long sort(SAHIAccess toSort, DAO.SortType sortType) // returns duration in milli-seconds
+    {
+        long startTime = System.currentTimeMillis();
+        toSort.sort(sortType);
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        return duration;
+    }
+    
+    private long sort(SortableLinkedList toSort, DAO.SortType sortType)
     {
         long startTime = System.currentTimeMillis();
         toSort.sort(sortType);

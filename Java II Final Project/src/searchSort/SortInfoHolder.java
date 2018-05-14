@@ -11,7 +11,7 @@ public class SortInfoHolder implements SearchSortInterface
 {
     private String sortName;
     private String implementation; // array or linked-list
-    private int comparisons;
+    private long comparisons;
     private long timeTaken;
     private String timeMeasurement; // whether milli-seconds, nano-seconds, etc.
     private int numberOfElements;
@@ -27,7 +27,7 @@ public class SortInfoHolder implements SearchSortInterface
      * @param numberOfElements the number of elements of the structure this sort was applied on
      * @param dataType the data type of the objects that the structure held within it
      */
-    public SortInfoHolder(String sortName, String implementation, String dataType, int numberOfElements, long timeTaken, String timeMeasurement, int comparisons)
+    public SortInfoHolder(String sortName, String implementation, String dataType, int numberOfElements, long timeTaken, String timeMeasurement, long comparisons)
     {
         this.sortName = sortName;
         this.implementation = implementation;
@@ -68,7 +68,7 @@ public class SortInfoHolder implements SearchSortInterface
     /**
      * @return the comparisons
      */
-    public int getComparisons() {
+    public long getComparisons() {
         return comparisons;
     }
 
