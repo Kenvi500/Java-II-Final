@@ -7,6 +7,7 @@ import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import linked_list.SortableLinkedList;
 import searchSort.SearchSortInterface;
+import text.TextFileInterface;
 
 /**
  *
@@ -21,7 +22,7 @@ public class OutputSortResultsFrame extends javax.swing.JFrame
     private ArrayList<SAHIAccess> arrayHolders;
     private ArrayList<Integer> numElements; // number of elements for each sort
     private ArrayList<DAO.Order> orders; // order chosen for each sort
-    private ArrayList<DAO> dataAccess; // a bunch of DAO's for access to difference text files
+    private ArrayList<TextFileInterface> dataAccess; // a bunch of DAO's for access to difference text files
     private ArrayList<Boolean> isArray; // whether the implementation of each sort is array-based or linked-list based
     private ArrayList<SortableLinkedList> linkedLists;
     
@@ -66,13 +67,12 @@ public class OutputSortResultsFrame extends javax.swing.JFrame
             numElements.add(i, getNumElements(indicesChosen.get(i))); // get the number of elements the sort is going to use
             orders.add(i, getOrder(indicesChosen.get(i))); // get the order that the values are organized in
             isArray.add(i, isArrayBased(sortChoices.get(i))); // add bool representing whether that sort is array or linked-list based
-            dataAccess.add(i, new DAO()); // create new dao to store
+            dataAccess.add(i, DAO.createTextFile(numElements.get(i), orders.get(i))); // create txt file
             
-            dataAccess.get(i).createTextFile(numElements.get(i), orders.get(i)); // create txt file for that DAO
             if(isArray.get(i))
-                arrayHolders.add(i, dataAccess.get(i).getComparableArrayHolder(dataAccess.get(i).getArrayFromFile())); // create comparable array holder with data from text file
+                arrayHolders.add(i, DAO.getComparableArrayHolder(dataAccess.get(i).getArray())); // create comparable array holder with data from text file
             else
-                linkedLists.add(i, dataAccess.get(i).getLinkedListFromFile());
+                linkedLists.add(i, dataAccess.get(i).getLinkedList());
             
             if(isArray.get(i))
                 duration = sort(arrayHolders.get(i), getSortFromString(sortChoices.get(i))); // gets sort from sortChoices, passes that sort and the array holder to be sorted
@@ -80,9 +80,9 @@ public class OutputSortResultsFrame extends javax.swing.JFrame
                 duration = sort(linkedLists.get(i), getSortFromString(sortChoices.get(i)));
             
             if(isArray.get(i))
-                sortOutputInfo.add(i, dataAccess.get(i).getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", arrayHolders.get(i).getSortComparisons())); // create sort info holder and add it
+                sortOutputInfo.add(i, DAO.getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", arrayHolders.get(i).getSortComparisons())); // create sort info holder and add it
             else
-                sortOutputInfo.add(i, dataAccess.get(i).getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", linkedLists.get(i).getSortComparisons())); // create sort info holder and add it
+                sortOutputInfo.add(i, DAO.getSortInfoHolder(getSortFromString(sortChoices.get(i)), getImplementationName(i), "Integer", numElements.get(i), duration, "milli-seconds", linkedLists.get(i).getSortComparisons())); // create sort info holder and add it
             
             dataAccess.get(i).writeToOutput(sortOutputInfo.get(i)); // writing to output file
         }

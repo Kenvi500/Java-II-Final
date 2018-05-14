@@ -1,11 +1,11 @@
 package searchingUI;
 
 import java.util.ArrayList;
-import access.DAO;
 import access.SAHIAccess;
-import arrayHolders.ComparableArrayHolder;
 import searchSort.SearchSortInterface;
 import titlesUI.TitleFrameApp;
+import access.DAO;
+import text.TextFileInterface;
 
 /**
  *
@@ -15,7 +15,7 @@ public class SearchingFrame extends javax.swing.JFrame
 {
     private final javax.swing.JFrame previousWindow;
     private final ArrayList<DAO.SearchType> searchTypes = new ArrayList<>();
-    private final DAO<Integer> dataAccess;
+    private TextFileInterface dataAccess;
     private SearchSortInterface searchInfo = null;
     
     private final int HUNDRED = 0;
@@ -35,7 +35,6 @@ public class SearchingFrame extends javax.swing.JFrame
         searchTypes.add(DAO.SearchType.BINARY);
         searchTypes.add(DAO.SearchType.HASHING);
         selectRadioButton("numElements", 0);
-        dataAccess = new DAO();
     }
 
     /**
@@ -430,9 +429,9 @@ public class SearchingFrame extends javax.swing.JFrame
                 return;
             }
             
-            dataAccess.createTextFile(size, theOrder);
-            Integer[] someArray = dataAccess.getArrayFromFile();
-            SAHIAccess toSearchThrough = dataAccess.getComparableArrayHolder(someArray);
+            dataAccess = DAO.createTextFile(size, theOrder);
+            Integer[] someArray = dataAccess.getArray();
+            SAHIAccess toSearchThrough = DAO.getComparableArrayHolder(someArray);
             
             if(toSearchFor > size)
                 javax.swing.JOptionPane.showMessageDialog(this, "Value to search for is greater than the current capacity of the structure.", "Out Of Bounds Error", javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -444,7 +443,7 @@ public class SearchingFrame extends javax.swing.JFrame
                 results = toSearchThrough.indexOf(toSearchFor, searchType);
                 endTime = System.nanoTime();
                 duration = endTime - startTime;
-                searchInfo = dataAccess.getSearchInfoHolder(searchType, Integer.toString(toSearchFor), Integer.toString(results), "Array", "Integer", size, duration, "nano-seconds", toSearchThrough.getSearchComparisons());
+                searchInfo = DAO.getSearchInfoHolder(searchType, Integer.toString(toSearchFor), Integer.toString(results), "Array", "Integer", size, duration, "nano-seconds", toSearchThrough.getSearchComparisons());
                 outputTxtArea.setText(searchInfo.toString());
                 dataAccess.writeToOutput(searchInfo);
             }    
